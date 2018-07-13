@@ -79,7 +79,7 @@ setup(
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
     #
     # Optional
-    url="<URL>",
+    url="https://github.com/alexseitsinger/page_scrapers",
 
     # This should be your name or the name of the organization which owns the
     # project.
