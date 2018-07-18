@@ -2,7 +2,7 @@
 
 ## Description
 
-Scrapes pages, like wikipedia, for for urls, descriptions, and images.
+Scrapes pages for for urls, descriptions, and images data.
 
 ## Installation
 
@@ -12,18 +12,18 @@ pip install page_scrapers
 
 ## Methods
 
-1. scrape_page(url)
-2. scrape_pages(string, limit)
+1. wikipedia.scrape_page(url) - Scrapes the page for data and returns it as a dictionary.
+2. wikipedia.scrape_pages(string, limit) - Finds URL's to pages and then scrapes each page for their data, limiting results to the number specified, or 3 if not provided.
 
 ## Usage
 
 ```python
-from page_scrapers.wikipedia import scrape_page
+from page_scrapers import wikipedia
 url = "https://en.wikipedia.org/wiki/Batman_Begins"
-scraped_data = scrape_page(url)
+scraped_data = wikipedia.scrape_page(url)
 ```
 
 ```python
-from page_scrapers.wikipedia import scrape_pages
-scraped_data = scrape_pages("american gangster film", 3)
+from page_scrapers import wikipedia
+scraped_data = wikipedia.scrape_pages("american gangster film", 3)
 ```
