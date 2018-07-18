@@ -13,7 +13,7 @@ pip install page_scrapers
 ## Methods
 
 1. wikipedia.scrape_page(url) - Scrapes the page for data and returns it as a dictionary.
-2. wikipedia.scrape_pages(string, limit) - Finds URL's to pages and then scrapes each page for their data, limiting results to the number specified, or 3 if not provided.
+2. wikipedia.scrape_pages(string, limit) - Finds URL's to pages and then scrapes each page for their data, limiting results to the number specified, or 10 if not provided.
 
 ## Usage
 
