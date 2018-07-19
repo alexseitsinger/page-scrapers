@@ -7,7 +7,7 @@ Scrapes pages for for urls, descriptions, and images data.
 ## Installation
 
 ```python
-pip install page_scrapers
+pip install page-scrapers
 ```
 
 ## Methods
