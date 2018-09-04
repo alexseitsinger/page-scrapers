@@ -8,11 +8,24 @@ from __future__ import print_function
 from glob import glob
 from setuptools import setup, find_packages
 from os.path import abspath, basename, dirname, join, splitext
+import re
 
-here = abspath(dirname(__file__))
+HERE = abspath(dirname(__file__))
+NAME = basename(HERE)
 
-with open(join(here, "README.md"), encoding="utf-8") as f:
-    long_description = f.read()
+
+def read(*parts):
+    with open(join(HERE, *parts), "r", encoding="utf-8") as fp:
+        return fp.read()
+
+
+def find_version(*file_paths):
+    version_file = read(*file_paths)
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
 
 setup(
     # This is the name of your project. The first time you publish this
@@ -28,7 +41,7 @@ setup(
     # https://packaging.python.org/specifications/core-metadata/#name
     #
     # Required
-    name="page_scrapers",
+    name=NAME,
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
@@ -38,7 +51,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     #
     # Required
-    version="1.0.0",
+    version=find_version("src", NAME, "__init__.py"),
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -57,7 +70,7 @@ setup(
     # https://packaging.python.org/specifications/core-metadata/#description-optional
     #
     # Optional
-    long_description=long_description,
+    long_description=read("README.md"),
 
     # Denotes that our long_description is in Markdown; valid values are
     # text/plain, text/x-rst, and text/markdown
@@ -79,7 +92,7 @@ setup(
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
     #
     # Optional
-    url="https://github.com/alexseitsinger/page_scrapers",
+    url="https://github.com/alexseitsinger/{}".format(NAME),
 
     # This should be your name or the name of the organization which owns the
     # project.
@@ -112,8 +125,8 @@ setup(
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
+        # "Programming Language :: Python :: 2",
+        # "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
