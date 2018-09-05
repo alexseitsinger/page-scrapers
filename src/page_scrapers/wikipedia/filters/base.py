@@ -1,5 +1,5 @@
 import re
-from roman_numerals import int_to_roman
+from ..utils import int_to_roman
 
 
 class WikipediaBaseFilter(object):
