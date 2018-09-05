@@ -2,13 +2,15 @@ import json
 import re
 import requests
 import bs4
+from .filters.film import FilmFilter
 
 
 class Scraper(object):
     def __init__(self, string,
                        limit=10,
                        disambiguation_id="Film_and_television",
-                       disambiguation_keyword="film"):
+                       disambiguation_keyword="film",
+                       filter_class=FilmFilter):
         # the string to scrape for.
         self.string = string
         # number of items to return from scraping.
@@ -17,6 +19,10 @@ class Scraper(object):
         self.disambiguation_id = disambiguation_id
         # The keyword to search for in the disambiguated links list.
         self.disambiguation_keyword = disambiguation_keyword
+        # The raw data we scraped from wikipedia
+        self.scraped = None
+        # The filter class to use on the scraped data
+        self.filter_class = filter_class
         self.IMAGE_FILETYPES = (
             'jpg', 'jpeg', 'gif', 'png',
             "JPG", "JPEG", "GIF", "PNG",
@@ -98,7 +104,13 @@ class Scraper(object):
         for url in self.make_urls(limit):
             for scraped_page in self.scrape_page(url):
                 scraped_pages.append(scraped_page)
+        self.scraped = scraped_pages
         return scraped_pages
+
+    def filter(self):
+        filter_instance = self.filter_class()
+        filtered = filter_instance.filter(self.string, self.scraped)
+        return filtered
 
     def scrape_page(self, url):
         scraped = []
