@@ -19,8 +19,9 @@ pipenv install page-scrapers
 ## Usage
 
 ```python
-from page_scrapers import wikipedia
+from page_scrapers.wikipedia.scraper import WikipediaScraper
 
-scraper = wikipedia.Scraper(string="batman begins", limit=1)
-scraped = scraper.scrape()
+scraper = WikipediaScraper("hellraiser 2")
+scraped = scraper.scrape(3)
+filtered = scraper.filter()
 ```
