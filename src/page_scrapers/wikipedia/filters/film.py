@@ -1,7 +1,7 @@
-from .base import BaseFilter
+from .base import WikipediaBaseFilter
 
 
-class FilmFilter(BaseFilter):
+class WikipediaFilmFilter(WikipediaBaseFilter):
     keywords = [
         "film",
         "films",

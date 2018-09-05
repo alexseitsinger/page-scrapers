@@ -2,7 +2,7 @@ import re
 from roman_numerals import int_to_roman
 
 
-class BaseFilter(object):
+class WikipediaBaseFilter(object):
     def description_has_keywords(self, description):
         if any(x in description for x in self.keywords):
             return True

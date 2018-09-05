@@ -2,15 +2,15 @@ import json
 import re
 import requests
 import bs4
-from .filters.film import FilmFilter
+from .filters.film import WikipediaFilmFilter
 
 
-class Scraper(object):
+class WikipediaScraper(object):
     def __init__(self, string,
                        limit=10,
                        disambiguation_id="Film_and_television",
                        disambiguation_keyword="film",
-                       filter_class=FilmFilter):
+                       filter_class=WikipediaFilmFilter):
         # the string to scrape for.
         self.string = string
         # number of items to return from scraping.
