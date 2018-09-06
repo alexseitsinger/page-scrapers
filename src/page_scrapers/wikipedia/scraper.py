@@ -43,7 +43,8 @@ class WikipediaScraper(object):
         req = requests.get(url)
         if req.status_code != 200:
             raise Exception("Failed to download page.")
-        return bs4.BeautifulSoup(req.content, 'html.parser')
+        soup = bs4.BeautifulSoup(req.content, 'html.parser')
+        return soup
 
     def filter_images(self, soup):
         images = []
@@ -67,6 +68,21 @@ class WikipediaScraper(object):
         except IndexError:
             return ""
 
+    def filter_disambiguated(self, soup):
+        urls = []
+        try:
+            anchors = soup.find(id=self.disambigation_id).find_next("ul").find_all("a")
+            for anchor in anchors:
+                for k, v in anchor.attrs.items():
+                    if k == "href":
+                        if self.disambiguation_keyword in v:
+                            if not v.startswith(self.WIKIPEDIA_URL):
+                                v = "{}{}".format(self.WIKIPEDIA_URL, v)
+                            urls.append(v)
+        except AttributeError:
+            pass
+        return urls
+
     def is_disambiguated(self, soup):
         title = soup.find("title")
         results = re.search(r"\(disambiguation\)", title.text)
@@ -76,19 +92,6 @@ class WikipediaScraper(object):
         except AttributeError:
             # Didn't match anything.
             return False
-        return False
-
-    def filter_disambiguated(self, soup):
-        anchors = soup.find(id=self.disambiguation_id).find_next("ul").find_all("a")
-        urls = []
-        for anchor in anchors:
-            for k,v in anchor.attrs.items():
-                if k == "href":
-                    if self.disambiguation_keyword in v:
-                        if not v.startswith(self.WIKIPEDIA_URL):
-                            v = "{}{}".format(self.WIKIPEDIA_URL, v)
-                        urls.append(v)
-        return urls
 
     def make_data(self, url, soup):
         return {
