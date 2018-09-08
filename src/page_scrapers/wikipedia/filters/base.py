@@ -1,5 +1,5 @@
 import re
-from ..utils import int_to_roman
+from ..utils import int_to_roman, get_best_match
 
 
 class WikipediaBaseFilter(object):
@@ -12,6 +12,8 @@ class WikipediaBaseFilter(object):
 
     def description_has_name(self, description, name):
         if name in description:
+            return True
+        if get_best_match(name, description)[1] >= 0.95:
             return True
         return False
 
@@ -44,9 +46,7 @@ class WikipediaBaseFilter(object):
                     continue
                 cleaned_description = self.clean_description(raw_description)
                 if self.description_has_name(cleaned_description, film_name):
-                    print("description has name", film_name)
                     if self.description_has_keywords(cleaned_description):
-                        print("description has keywords", cleaned_description)
                         result = item
                 else:
                     try:
