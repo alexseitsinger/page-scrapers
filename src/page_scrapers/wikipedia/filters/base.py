@@ -62,6 +62,8 @@ class WikipediaBaseFilter(object):
                 if raw_description is None:
                     continue
                 cleaned_description = self.clean_description(raw_description)
+                if len(cleaned_description) == 0:
+                    continue
                 if self.description_has_name(cleaned_description, film_name):
                     if self.description_has_keywords(cleaned_description):
                         result = item
