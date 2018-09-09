@@ -1,20 +1,37 @@
 import re
 from ..utils import int_to_roman, get_best_match
-
+# import fuzzy
+# import phonetics
 
 class WikipediaBaseFilter(object):
     def description_has_keywords(self, description):
         if any(x in description for x in self.keywords):
             return True
-        # if any(x in description.split(" ") for x in self.keywords):
-        #     return True
         return False
 
     def description_has_name(self, description, name):
+        # If name is in the description, then return true
         if name in description:
             return True
-        if get_best_match(name, description)[1] >= 0.95:
-            return True
+        # Otherwise, find the best matching string.
+        match, value = get_best_match(name, description)
+        # If it matches 0.94 or higher, try to check the characters.
+        if value >= 0.94:
+            # Find the characters that are different.
+            diff = tuple(set(name).symmetric_difference(set(match)))
+            # Save whetehre each different character is alphanumeric or not
+            # ie: A-Z or ':' or '_'
+            alphanumeric = []
+            for char in diff:
+                if char.isalpha() or char.isnumeric():
+                    alphanumeric.append((char, True))
+                else:
+                    alphanumeric.append((char, False))
+            # If it only contains extra non-alphanumeric characters,
+            # then consider it a match, and return true.
+            if all(t[1] is False for t in alphanumeric):
+                return True
+        # Otherwise, return false.
         return False
 
     def url_has_name(self, url, name):
