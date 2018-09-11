@@ -194,6 +194,7 @@ setup(
         #   "six", or "six>=1.7",
         "requests",
         "bs4",
+        "find_best_string",
     ],
 
     # List additional groups of dependencies here (e.g. development

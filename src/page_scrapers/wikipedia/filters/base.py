@@ -1,7 +1,6 @@
 import re
-from ..utils import int_to_roman, get_best_match
-# import fuzzy
-# import phonetics
+from ..utils import int_to_roman
+from find_best_string import find_best_string
 
 class WikipediaBaseFilter(object):
     def description_has_keywords(self, description):
@@ -14,7 +13,7 @@ class WikipediaBaseFilter(object):
         if name in description:
             return True
         # Otherwise, find the best matching string.
-        match, value = get_best_match(name, description)
+        match, value = find_best_string(name, description)
         # If it matches 0.94 or higher, try to check the characters.
         if value >= 0.94:
             # Find the characters that are different.
