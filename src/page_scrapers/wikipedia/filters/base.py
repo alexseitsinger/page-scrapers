@@ -44,6 +44,7 @@ class WikipediaBaseFilter(object):
         ])
 
     def clean_description(self, description):
+        description = description.lower()
         description = re.sub(r"[^\x00-\x7F]", " ", description)
         description = re.sub(r"\n", " ", description)
         description = re.sub("\'", "", description)
@@ -51,8 +52,15 @@ class WikipediaBaseFilter(object):
         description = re.sub(r"\s\s+", " ", description)
         return description
 
-    def filter(self, film_name, scraped_data):
+    def clean_name(self, name):
+        name = name.lower()
+        name = re.sub(r"({})$".format("|".join(self.keywords)), "", name)
+        name = name.strip()
+        return name
+
+    def filter(self, name, scraped_data):
         result = None
+        name = self.clean_name(name)
         while len(scraped_data) != 0:
             item = scraped_data.pop(0)
             if result is None:
@@ -63,16 +71,16 @@ class WikipediaBaseFilter(object):
                 cleaned_description = self.clean_description(raw_description)
                 if len(cleaned_description) == 0:
                     continue
-                if self.description_has_name(cleaned_description, film_name):
+                if self.description_has_name(cleaned_description, name):
                     if self.description_has_keywords(cleaned_description):
                         result = item
                 else:
                     try:
-                        m = re.search(r"\d+", film_name)
+                        m = re.search(r"\d+", name)
                         number = m.group(0)
                         roman = int_to_roman(int(number))
-                        roman_name = film_name.replace(number, roman)
-                        roman_name_lower = film_name.replace(number, roman.lower())
+                        roman_name = name.replace(number, roman)
+                        roman_name_lower = name.replace(number, roman.lower())
                         if self.decription_has_name(cleaned_description, roman_name):
                             if self.description_has_keywords(cleaned_description):
                                 result = item
@@ -85,7 +93,7 @@ class WikipediaBaseFilter(object):
                             result = item
                     except AttributeError:
                         pass
-                if self.url_has_name(url, film_name):
+                if self.url_has_name(url, name):
                     result = item
         return result
 

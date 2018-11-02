@@ -17,7 +17,7 @@ from wikipedia.scraper import WikipediaScraper
 class Test(object):
     def run(self):
         scraper = WikipediaScraper(self.query)
-        scraped = list(scraper.scrape(self.limit))
+        scraped = list(scraper.scrape())
         filtered = scraper.filter()
         return {
             "scraped": scraped,
@@ -43,6 +43,8 @@ class TestFour(Test):
 class TestFive(Test):
     query = "house of 1000 corpses"
 
+class TestSix(Test):
+    query = "into the wild film"
 
 test_one = TestOne()
 test_one.print()
@@ -58,3 +60,6 @@ test_four.print()
 
 test_five = TestFive()
 test_five.print()
+
+test_six = TestSix()
+test_six.print()
