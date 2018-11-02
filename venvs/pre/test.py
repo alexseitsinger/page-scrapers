@@ -30,19 +30,19 @@ class Test(object):
 
 class TestOne(Test):
     query = "hellraiser judgement"
-    limit = 3
 
 class TestTwo(Test):
     query = "hellraiser 2"
-    limit = 3
 
 class TestThree(Test):
     query = "ironman 2"
-    limit = 3
 
 class TestFour(Test):
     query = "ironman 1"
-    limit = 3
+
+class TestFive(Test):
+    query = "house of 1000 corpses"
+
 
 test_one = TestOne()
 test_one.print()
@@ -55,3 +55,6 @@ test_three.print()
 
 test_four = TestFour()
 test_four.print()
+
+test_five = TestFive()
+test_five.print()

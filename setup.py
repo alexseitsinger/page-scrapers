@@ -15,8 +15,8 @@ NAME = basename(HERE)
 
 
 def read(*parts):
-    with open(join(HERE, *parts), "r", encoding="utf-8") as fp:
-        return fp.read()
+    with open(join(HERE, *parts), mode="r", encoding="utf-8") as f:
+        return f.read()
 
 
 def find_version(*file_paths):
