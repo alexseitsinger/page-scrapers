@@ -58,7 +58,7 @@ setup(
     # https://packaging.python.org/specifications/core-metadata/#summary
     #
     # Required
-    description="Scrapes pages like wikipedia for for urls, descriptions, and images",
+    description="Scrapes wikipedia pages for for url, description, plot, images, genre, and year data.",
 
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -147,7 +147,7 @@ setup(
     ],
 
     py_modules=[
-        splitext(basename(path))[0] for path in glob("src/*.py")
+        # splitext(basename(path))[0] for path in glob("src/*.py")
     ],
 
     # You can just specify package directories manually here if your project is

@@ -2,7 +2,7 @@ import re
 from ..utils import int_to_roman
 from find_best_string import find_best_string
 
-class WikipediaBaseFilter(object):
+class WikipediaFilterBase(object):
     def description_has_keywords(self, description):
         if any(x in description for x in self.keywords):
             return True
@@ -52,6 +52,7 @@ class WikipediaBaseFilter(object):
         description = re.sub(r"\s\s+", " ", description)
         return description
 
+    # add conditional for names that already include keyword in the official title. ie: "A serbian film", etc.
     def clean_name(self, name):
         name = name.lower()
         name = re.sub(r"({})$".format("|".join(self.keywords)), "", name)

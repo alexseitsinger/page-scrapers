@@ -2,39 +2,31 @@ import json
 import re
 import requests
 import bs4
-from .filters.film import WikipediaFilmFilter
+
+IMAGE_FILETYPES = (
+    'jpg', 'jpeg', 'gif', 'png',
+    "JPG", "JPEG", "GIF", "PNG",
+)
+SKIPPED_FILETYPES = tuple([
+    "svg.{}".format(filetype for filetype in IMAGE_FILETYPES)
+])
+WIKIMEDIA_UPLOAD_URL = "//upload.wikimedia.org"
+WIKIPEDIA_API_URL = "w/api.php?action=opensearch&search={}&limit={}&namespace=0&format=json"
+ANNOTATIONS_REGEX = r'(\[[0-9]+\])'
 
 
-class WikipediaScraper(object):
-    def __init__(self, string,
-                       limit=0,
-                       disambiguation_id="Film_and_television",
-                       disambiguation_keyword="film",
-                       filter_class=WikipediaFilmFilter):
+class WikipediaScraperBase(object):
+
+    filter_class = None
+    disambiguation_id = None
+    disambiguation_keyword = None
+    limit = 0
+    scraped = None
+    wikipedia_url = "https://en.wikipedia.org"
+
+    def __init__(self, string):
         # the string to scrape for.
         self.string = string
-        # number of items to return from scraping.
-        self.limit = limit
-        # Id of the disambiguation element to get anchors from.
-        self.disambiguation_id = disambiguation_id
-        # The keyword to search for in the disambiguated links list.
-        self.disambiguation_keyword = disambiguation_keyword
-        # The raw data we scraped from wikipedia
-        self.scraped = None
-        # The filter class to use on the scraped data
-        self.filter_class = filter_class
-        self.IMAGE_FILETYPES = (
-            'jpg', 'jpeg', 'gif', 'png',
-            "JPG", "JPEG", "GIF", "PNG",
-        )
-        self.SKIPPED_FILETYPES = tuple([
-            "svg.%s" % filetype
-            for filetype in self.IMAGE_FILETYPES
-        ])
-        self.RE_WIKIPEDIA_ANNOTATIONS = r'(\[[0-9]+\])'
-        self.WIKIMEDIA_UPLOAD_URL = "//upload.wikimedia.org"
-        self.WIKIPEDIA_URL = "https://en.wikipedia.org"
-        self.WIKIPEDIA_API_URL = "w/api.php?action=opensearch&search={}&limit={}&namespace=0&format=json"
 
     def get_soup(self, url):
         req = requests.get(url)
@@ -47,39 +39,11 @@ class WikipediaScraper(object):
         images = []
         for tag in soup.findAll("img"):
             src = tag["src"]
-            if src.endswith(self.IMAGE_FILETYPES):
-                if not src.endswith(self.SKIPPED_FILETYPES):
-                    if src.startswith(self.WIKIMEDIA_UPLOAD_URL):
+            if src.endswith(IMAGE_FILETYPES):
+                if not src.endswith(SKIPPED_FILETYPES):
+                    if src.startswith(WIKIMEDIA_UPLOAD_URL):
                         images.append(src)
         return images
-
-    def filter_plot(self, soup):
-        try:
-            # Collect the text data from the paragraph elements.
-            paragraphs = []
-            # Find the plot element on the page.
-            el = soup.findAll(id="Plot")[0]
-            # Find its parent, since its in an H2 container.
-            parent = el.parent
-            if parent.name == "h2":
-                # Then get the paragraphs that follow it.
-                sib = parent.findNextSibling()
-                while sib.name == "p":
-                    paragraph = sib.getText().strip()
-                    # remove footnote annotations
-                    paragraph = re.sub(
-                        self.RE_WIKIPEDIA_ANNOTATIONS,
-                        "",
-                        paragraph
-                    )
-                    paragraphs.append(paragraph)
-                    # get the next sibling to check if its another paragraph.
-                    sib = sib.findNextSibling()
-            # Combine the paragraphs text together to form the plot.
-            plot = " ".join(paragraphs)
-            return plot
-        except IndexError:
-            return ""
 
     def filter_description(self, soup):
         try:
@@ -90,7 +54,7 @@ class WikipediaScraper(object):
                 paragraph = sib.getText().strip()
                 # remove footnote annotations
                 paragraph = re.sub(
-                    self.RE_WIKIPEDIA_ANNOTATIONS,
+                    ANNOTATIONS_REGEX,
                     "",
                     paragraph
                 )
@@ -109,8 +73,8 @@ class WikipediaScraper(object):
                 for k, v in anchor.attrs.items():
                     if k == "href":
                         if self.disambiguation_keyword in v:
-                            if not v.startswith(self.WIKIPEDIA_URL):
-                                v = "{}{}".format(self.WIKIPEDIA_URL, v)
+                            if not v.startswith(self.wikipedia_url):
+                                v = "{}{}".format(self.wikipedia_url, v)
                             urls.append(v)
         except AttributeError:
             pass
@@ -131,7 +95,6 @@ class WikipediaScraper(object):
             "url": url,
             "description": self.filter_description(soup),
             "images": self.filter_images(soup),
-            "plot": self.filter_plot(soup),
         }
 
     def scrape(self, limit=None):
@@ -170,8 +133,8 @@ class WikipediaScraper(object):
         query_string = query_string.replace(r"\s\s+", " ")
         query_string = query_string.replace(" ", "%20")
         query_url = "{}/{}".format(
-            self.WIKIPEDIA_URL,
-            self.WIKIPEDIA_API_URL.format(
+            self.wikipedia_url,
+            WIKIPEDIA_API_URL.format(
                 query_string,
                 limit,
             )

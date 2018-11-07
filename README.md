@@ -2,7 +2,7 @@
 
 ## Description
 
-Scrapes pages for for urls, descriptions, and images data.
+Scrapes wikipedia pages for for url, description, plot, images, genre, and year data.
 
 ## Installation
 
@@ -19,9 +19,9 @@ pipenv install page-scrapers
 ## Usage
 
 ```python
-from page_scrapers.wikipedia.scraper import WikipediaScraper
+from page_scrapers.wikipedia.scrapers.film import WikipediaFilmScraper
 
-scraper = WikipediaScraper("hellraiser 2")
-scraped = scraper.scrape(3)
+scraper = WikipediaFilmScraper("hellraiser 2")
+scraped = scraper.scrape()
 filtered = scraper.filter()
 ```
