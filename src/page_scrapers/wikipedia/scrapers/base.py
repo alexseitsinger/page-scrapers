@@ -3,6 +3,8 @@ import re
 import requests
 import bs4
 
+from ..exceptions import StringNotProvided
+
 IMAGE_FILETYPES = (
     'jpg', 'jpeg', 'gif', 'png',
     "JPG", "JPEG", "GIF", "PNG",
@@ -17,6 +19,7 @@ ANNOTATIONS_REGEX = r'(\[[0-9]+\])'
 
 class WikipediaScraperBase(object):
 
+    string = None
     filter_class = None
     disambiguation_id = None
     disambiguation_keyword = None
@@ -24,9 +27,12 @@ class WikipediaScraperBase(object):
     scraped = None
     wikipedia_url = "https://en.wikipedia.org"
 
-    def __init__(self, string):
-        # the string to scrape for.
-        self.string = string
+    def __init__(self, string=None):
+        if self.string is None:
+            if string is None:
+                raise StringNotProvided(
+                    "There was no string provided to the scraper.")
+            self.string = string
 
     def get_soup(self, url):
         req = requests.get(url)
