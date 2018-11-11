@@ -10,7 +10,8 @@ IMAGE_FILETYPES = (
     "JPG", "JPEG", "GIF", "PNG",
 )
 SKIPPED_FILETYPES = tuple([
-    "svg.{}".format(filetype for filetype in IMAGE_FILETYPES)
+    "svg.{}".format(filetype)
+    for filetype in IMAGE_FILETYPES
 ])
 WIKIMEDIA_UPLOAD_URL = "//upload.wikimedia.org"
 WIKIPEDIA_API_URL = "w/api.php?action=opensearch&search={}&limit={}&namespace=0&format=json"

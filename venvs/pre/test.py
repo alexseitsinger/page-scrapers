@@ -29,43 +29,50 @@ class FilmTest(object):
 
 
 class FilmTestOne(FilmTest):
-    query = "hellraiser judgement"
+    query = "american gangster"
 
 
-class FilmTestTwo(FilmTest):
-    query = "hellraiser 2"
+test_one = FilmTestOne()
+test_one.print()
+
+# class FilmTestOne(FilmTest):
+#     query = "hellraiser judgement"
 
 
-class FilmTestThree(FilmTest):
-    query = "ironman 2"
+# class FilmTestTwo(FilmTest):
+#     query = "hellraiser 2"
 
 
-class FilmTestFour(FilmTest):
-    query = "ironman 1"
+# class FilmTestThree(FilmTest):
+#     query = "ironman 2"
 
 
-class FilmTestFive(FilmTest):
-    query = "house of 1000 corpses"
+# class FilmTestFour(FilmTest):
+#     query = "ironman 1"
 
 
-class FilmTestSix(FilmTest):
-    query = "into the wild film"
+# class FilmTestFive(FilmTest):
+#     query = "house of 1000 corpses"
 
 
-film_test_one = FilmTestOne()
-film_test_one.print()
+# class FilmTestSix(FilmTest):
+#     query = "into the wild film"
 
-film_test_two = FilmTestTwo()
-film_test_two.print()
 
-film_test_three = FilmTestThree()
-film_test_three.print()
+# film_test_one = FilmTestOne()
+# film_test_one.print()
 
-film_test_four = FilmTestFour()
-film_test_four.print()
+# film_test_two = FilmTestTwo()
+# film_test_two.print()
 
-film_test_five = FilmTestFive()
-film_test_five.print()
+# film_test_three = FilmTestThree()
+# film_test_three.print()
 
-film_test_six = FilmTestSix()
-film_test_six.print()
+# film_test_four = FilmTestFour()
+# film_test_four.print()
+
+# film_test_five = FilmTestFive()
+# film_test_five.print()
+
+# film_test_six = FilmTestSix()
+# film_test_six.print()
