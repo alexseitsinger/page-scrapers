@@ -18,7 +18,7 @@ setup(
     author="Alex Seitsinger",
     author_email="software@alexseitsinger.com",
     url=HOMEPAGE_URL,
-    install_requires=["requests", "bs4", "find-best-string"],
+    install_requires=["requests", "bs4", "text-tools", "number-tools"],
     package_dir={"": "src"},
     packages=find_packages("src", exclude=["tests"]),
     include_package_data=True,
