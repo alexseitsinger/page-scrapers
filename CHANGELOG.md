@@ -1,3 +1,11 @@
+<a name="v2.3.0"></a>
+## [v2.3.0](https://github.com/alexseitsinger/page-scrapers/compare/v2.2.0...v2.3.0) (2019-06-29)
+
+### Code Refactoring
+- Imports required modules. ([e1d02a1](https://github.com/alexseitsinger/page-scrapers/commit/e1d02a1ee692b2f56b4cc3130f77781bf0982dd3))
+- Removes unnecessary module. ([e722fce](https://github.com/alexseitsinger/page-scrapers/commit/e722fcee5a4fb52eb59563594b0aff36dc3eb201))
+
+
 <a name="v2.2.0"></a>
 ## [v2.2.0](https://github.com/alexseitsinger/page-scrapers/compare/v2.1.0...v2.2.0) (2019-06-29)
 
