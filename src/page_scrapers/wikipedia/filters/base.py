@@ -1,7 +1,6 @@
 import re
-from find_best_string import find_best_string
-
-from ..utils import int_to_roman
+from text_tools.finders import find_best_string
+from number_tools.converters import integer_to_roman
 
 
 class WikipediaFilterBase(object):
@@ -81,7 +80,7 @@ class WikipediaFilterBase(object):
                     try:
                         m = re.search(r"\d+", name)
                         number = m.group(0)
-                        roman = int_to_roman(int(number))
+                        roman = integer_to_roman(int(number))
                         roman_name = name.replace(number, roman)
                         roman_name_lower = name.replace(number, roman.lower())
                         if self.decription_has_name(cleaned_description, roman_name):
