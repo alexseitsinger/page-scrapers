@@ -2,18 +2,12 @@
 
 ## Description
 
-Scrapes wikipedia pages for for url, description, plot, images, genre, and year data.
+Scrapers for specific websites.
 
 ## Installation
 
 ```
 pip install page-scrapers
-```
-
-or
-
-```
-pipenv install page-scrapers
 ```
 
 ## Usage
