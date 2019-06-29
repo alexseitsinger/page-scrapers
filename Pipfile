@@ -6,7 +6,8 @@ verify_ssl = true
 [dev-packages]
 requests = "*"
 bs4 = "*"
-find-best-string = "*"
+number-tools = "*"
+text-tools = "*"
 
 [packages]
 
