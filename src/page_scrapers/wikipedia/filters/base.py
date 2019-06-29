@@ -1,6 +1,8 @@
 import re
-from ..utils import int_to_roman
 from find_best_string import find_best_string
+
+from ..utils import int_to_roman
+
 
 class WikipediaFilterBase(object):
     def description_has_keywords(self, description):
@@ -37,22 +39,22 @@ class WikipediaFilterBase(object):
         name_lower = name.lower()
         name_lower_underscore = name_lower.replace(" ", "_")
         name_lower_slug = name_lower.replace(" ", "-")
-        return any(x in url.lower() for x in [
-            name_lower,
-            name_lower_underscore,
-            name_lower_slug,
-        ])
+        return any(
+            x in url.lower()
+            for x in [name_lower, name_lower_underscore, name_lower_slug]
+        )
 
     def clean_description(self, description):
         description = description.lower()
         description = re.sub(r"[^\x00-\x7F]", " ", description)
         description = re.sub(r"\n", " ", description)
-        description = re.sub("\'", "", description)
+        description = re.sub("'", "", description)
         description = re.sub("'", "", description)
         description = re.sub(r"\s\s+", " ", description)
         return description
 
-    # add conditional for names that already include keyword in the official title. ie: "A serbian film", etc.
+    # add conditional for names that already include keyword in the official
+    # title. ie: "A serbian film", etc.
     def clean_name(self, name):
         name = name.lower()
         name = re.sub(r"({})$".format("|".join(self.keywords)), "", name)
@@ -85,7 +87,9 @@ class WikipediaFilterBase(object):
                         if self.decription_has_name(cleaned_description, roman_name):
                             if self.description_has_keywords(cleaned_description):
                                 result = item
-                        if self.decription_has_name(cleaned_description, roman_name_lower):
+                        if self.decription_has_name(
+                            cleaned_description, roman_name_lower
+                        ):
                             if self.description_has_keywords(cleaned_description):
                                 result = item
                         if self.url_has_name(url, roman_name):
@@ -97,4 +101,3 @@ class WikipediaFilterBase(object):
                 if self.url_has_name(url, name):
                     result = item
         return result
-
